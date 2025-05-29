@@ -1,10 +1,33 @@
 import "./moviecard.css";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addFavorite, removeFavorite } from "../actions/favAction";
 
-function MovieCard({ movie }) {
+function MovieCard({
+  movie,
+  isFav: isFavProp,
+  onFavorite,
+  favoriteButtonText,
+  favoriteButtonDisabled,
+}) {
+  const dispatch = useDispatch();
+  const favorites = useSelector((state) => state.favorites);
+  // Use prop if provided, otherwise fallback to redux
+  const isFav = typeof isFavProp === "boolean" ? isFavProp : favorites.some((m) => m.id === movie.id);
+
+  const handleFavorite = () => {
+    if (onFavorite) {
+      onFavorite();
+    } else {
+      if (isFav) dispatch(removeFavorite(movie.id));
+      else dispatch(addFavorite(movie));
+    }
+  };
+
   const releaseYear = movie.release_date
     ? movie.release_date.slice(0, 4)
     : "N/A";
+
   return (
     <div className="col-md-3 mb-4">
       <div className="card h-100 border-0 shadow movie-card-hover movie-card-gradient">
@@ -49,6 +72,21 @@ function MovieCard({ movie }) {
               <i className="bi bi-info-circle me-1"></i>
               Details
             </Link>
+            <button
+              className="btn"
+              onClick={handleFavorite}
+              aria-label="Toggle Favorite"
+              disabled={favoriteButtonDisabled}
+            >
+              <i
+                className={`bi ${
+                  isFav ? "bi-heart-fill text-danger" : "bi-heart"
+                } fs-4`}
+              ></i>
+              {favoriteButtonText && (
+                <span className="ms-1">{favoriteButtonText}</span>
+              )}
+            </button>
           </div>
         </div>
       </div>

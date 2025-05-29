@@ -1,8 +1,10 @@
 import "./navbar.css";
 import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Navbar() {
   const location = useLocation();
+  const favoritesCount = useSelector((state) => state.favorites.length);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm modern-navbar">
@@ -58,10 +60,11 @@ function Navbar() {
               <Link
                 className={`nav-link${
                   location.pathname === "/towatch" ? " active" : ""
-                }`}
+                } position-relative`}
                 to="/towatch"
               >
-                <i className="bi bi-film me-1"></i>Watch List
+                Watch List
+                <span className="badge bg-danger ms-1">{favoritesCount}</span>
               </Link>
             </li>
           </ul>
