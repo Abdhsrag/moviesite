@@ -11,9 +11,20 @@
          background 0.25s cubic-bezier(0.4, 0, 0.2, 1);
  }
 
+ .btn:focus, .btn:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
  .movie-card-hover:hover {
      transform: translateY(-10px) scale(1.04);
      box-shadow: 0 12px 32px rgba(13, 110, 253, 0.18);
      border: 2px solid #0d6efd;
      background: linear-gradient(135deg, #e9f5ff 70%, #e0e7ff 100%);
  }
+
+.btn:focus, .btn:active, .btn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
