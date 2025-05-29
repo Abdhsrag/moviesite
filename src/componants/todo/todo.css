@@ -1,0 +1,39 @@
+.todo-glass-card {
+  background: linear-gradient(135deg, #f8fafc 70%, #e0e7ff 100%);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  backdrop-filter: blur(8px);
+  border: none;
+}
+
+.todo-title {
+  color: #1e3c72;
+  text-shadow: 0 2px 8px rgba(30,60,114,0.08);
+  letter-spacing: 1px;
+}
+
+.todo-form .form-control {
+  border-radius: 2rem;
+  border: 1.5px solid #b6c6e3;
+  background: #f8fafc;
+}
+
+.todo-form .btn {
+  border-radius: 2rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(13, 110, 253, 0.08);
+}
+
+.todo-list .list-group-item {
+  border: none;
+  border-radius: 1rem;
+  margin-bottom: 0.5rem;
+  background: #f8fafc;
+  box-shadow: 0 2px 8px rgba(13, 110, 253, 0.04);
+}
+
+.todo-list .btn {
+  border-radius: 2rem;
+  font-size: 0.95rem;
+  padding: 0.25rem 0.9rem;
+}

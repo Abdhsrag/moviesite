@@ -1,0 +1,23 @@
+.modern-navbar {
+    background: linear-gradient(90deg, #0d6efd 70%, #4f8cff 100%);
+    border-bottom-left-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+}
+
+.navbar-brand {
+    letter-spacing: 1px;
+}
+
+.nav-link {
+    font-weight: 500;
+    border-radius: 2rem;
+    transition: background 0.2s, color 0.2s;
+    padding: 0.5rem 1.2rem;
+    margin: 0 0.25rem;
+}
+
+.nav-link.active,
+.nav-link:hover {
+    background: #fff;
+    color: #0d6efd !important;
+}

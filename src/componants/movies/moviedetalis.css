@@ -1,0 +1,7 @@
+ .movie-details-card {
+     background: linear-gradient(135deg, #f8fafc 70%, #e9f5ff 100%);
+ }
+
+ .movie-details-card .card-body {
+     padding: 2rem;
+ }
