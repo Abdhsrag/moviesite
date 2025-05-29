@@ -12,7 +12,6 @@ function MovieCard({
 }) {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites);
-  // Use prop if provided, otherwise fallback to redux
   const isFav = typeof isFavProp === "boolean" ? isFavProp : favorites.some((m) => m.id === movie.id);
 
   const handleFavorite = () => {
