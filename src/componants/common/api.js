@@ -1,22 +1,28 @@
 import axios from "axios";
 
-const apiKey = "2d34604310533209ef7ea81e57deefc2";
-const baseURL = "https://api.themoviedb.org/3/";
+export const fetchMovies = async ({
+  page = 1,
+  searchTerm = "",
+  language = "en-US",
+}) => {
+  const apiKey = "2d34604310533209ef7ea81e57deefc2";
+  const baseUrl = "https://api.themoviedb.org/3";
+  let url = "";
 
-export function fetchMovies({ page = 1, searchTerm = "" }) {
-  if (searchTerm.trim()) {
-    return axios.get(`${baseURL}search/movie`, {
-      params: { api_key: apiKey, query: searchTerm, page },
-    });
+  if (searchTerm) {
+    url = `${baseUrl}/search/movie?api_key=${apiKey}&language=${language}&query=${encodeURIComponent(
+      searchTerm
+    )}&page=${page}`;
   } else {
-    return axios.get(`${baseURL}movie/popular`, {
-      params: { api_key: apiKey, page },
-    });
+    url = `${baseUrl}/movie/popular?api_key=${apiKey}&language=${language}&page=${page}`;
   }
-}
 
-export function fetchMovieDetails(id) {
-  return axios.get(`${baseURL}movie/${id}`, {
-    params: { api_key: apiKey },
-  });
-}
+  return axios.get(url);
+};
+
+export const fetchMovieDetailsApi = ({ id, language = "en-US" }) => {
+  const apiKey = "2d34604310533209ef7ea81e57deefc2";
+  return axios.get(
+    `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=${language}`
+  );
+};

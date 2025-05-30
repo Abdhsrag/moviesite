@@ -1,19 +1,22 @@
 import "./moviedetalis.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import {fetchMovieDetails} from "../common/api";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMovieDetails } from "../actions/movieActions";
+import { useLanguage } from "../common/languageContext";
 
 function MovieDetails() {
   const { id } = useParams();
-  const [movie, setMovie] = useState(null);
+  const dispatch = useDispatch();
+  const { language } = useLanguage();
+  const { movie, loading, error } = useSelector((state) => state.movieDetails);
 
   useEffect(() => {
-    fetchMovieDetails(id)
-      .then((response) => setMovie(response.data))
-      .catch((error) => console.error("Error fetching movie details:", error));
-  }, [id]);
+    dispatch(fetchMovieDetails(id, language));
+  }, [dispatch, id, language]);
 
-  if (!movie) return <div className="text-center mt-5">Loading...</div>;
+  if (loading || !movie) return <div className="text-center mt-5">Loading...</div>;
+  if (error) return <div className="text-center text-danger mt-5">{error}</div>;
 
   return (
     <div className="container mt-5">

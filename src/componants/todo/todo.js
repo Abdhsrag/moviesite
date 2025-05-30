@@ -1,9 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
 import { addFavorite, removeFavorite } from "../actions/favAction";
 import { useState, useRef, useEffect } from "react";
-import { fetchMovies } from "../common/api";
+import { fetchMovies as fetchMoviesApi } from "../common/api";
 import { Link } from "react-router-dom";
 import "./todo.css";
+import { useLanguage } from "../common/languageContext";
 
 function Todo() {
   const favorites = useSelector((state) => state.favorites);
@@ -12,18 +13,34 @@ function Todo() {
   const [searchResults, setSearchResults] = useState([]);
   const [searching, setSearching] = useState(false);
   const searchAreaRef = useRef(null);
+  const { language } = useLanguage();
 
   const handleSearch = async (e) => {
     e.preventDefault();
     setSearching(true);
     try {
-      const response = await fetchMovies({ searchTerm: inputValue });
-      setSearchResults(response.data.results);
+      const response = await fetchMoviesApi({ searchTerm: inputValue, language });
+      setSearchResults(response.data.results || []);
     } catch (error) {
       setSearchResults([]);
     }
     setSearching(false);
   };
+
+  useEffect(() => {
+    if (inputValue.trim() !== "") {
+      (async () => {
+        setSearching(true);
+        try {
+          const response = await fetchMoviesApi({ searchTerm: inputValue, language });
+          setSearchResults(response.data.results || []);
+        } catch (error) {
+          setSearchResults([]);
+        }
+        setSearching(false);
+      })();
+    }
+  }, [language, inputValue]);
 
   const isFavorite = (movie) => favorites.some((m) => m.id === movie.id);
 
@@ -49,7 +66,7 @@ function Todo() {
     <div className="todo-bg d-flex align-items-center justify-content-center">
       <div className="card shadow-lg todo-glass-card border-0">
         <div className="card-body p-5">
-          <h2 className="card-title text-center mb-5 fw-bold todo-title">     
+          <h2 className="card-title text-center mb-5 fw-bold todo-title">
             Your <i className="bi bi-heart-fill text-danger mx-2"></i> Movies
             <span className="badge bg-danger ms-2 todo-badge">
               {favorites.length}

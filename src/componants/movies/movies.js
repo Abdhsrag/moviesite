@@ -1,25 +1,21 @@
 import "./movies.css";
 import { useEffect, useState } from "react";
-import { fetchMovies } from "../common/api";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMovies } from "../actions/movieActions";
 import MovieList from "./movielist";
+import { useLanguage } from "../common/languageContext";
 
 function Movies() {
-  const [movies, setMovies] = useState([]);
+  const dispatch = useDispatch();
+  const { movies, totalPages, loading, error } = useSelector((state) => state.movies);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [inputValue, setInputValue] = useState("");
+  const { language } = useLanguage();
 
- useEffect(() => {
-    fetchMovies({ page, searchTerm })
-      .then((response) => {
-        setMovies(response.data.results);
-        setTotalPages(response.data.total_pages);
-      })
-      .catch((error) => {
-        console.error("error:", error);
-      });
-  }, [page, searchTerm]);
+  useEffect(() => {
+    dispatch(fetchMovies({ page, searchTerm, language }));
+  }, [dispatch, page, searchTerm, language]);
 
   const handlePrev = () => {
     setPage((p) => Math.max(1, p - 1));
@@ -66,8 +62,14 @@ function Movies() {
           </div>
         </div>
 
-        <MovieList movies={movies} />
-        
+        {loading ? (
+          <div className="text-center my-5">Loading...</div>
+        ) : error ? (
+          <div className="text-center text-danger my-5">{error}</div>
+        ) : (
+          <MovieList movies={movies} />
+        )}
+
         <div className="d-flex justify-content-center align-items-center mt-4">
           <button
             className="btn modern-pg-btn me-2"
